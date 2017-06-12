@@ -19,7 +19,7 @@ world_frame : "enu"
 use_mag: false
 
 # If set to true, subscribe to the /imu/mag topic as a sensor_msgs/MagneticField; if set to false (deprecated), use geometry_msgs/Vector3Stamped. 
-use_magnetic_field_msg: false
+use_magnetic_field_msg: true
 
 
 # The parent frame to be used in publish_tf. 
