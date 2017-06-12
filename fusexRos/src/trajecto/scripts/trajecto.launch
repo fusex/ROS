@@ -45,12 +45,12 @@ Gyroscope      : base_link => kalman
 
    <param name="robot_description" textfile="./rocket.urdf" />
 
- <!--  
+
    <node name="rviz" pkg="rviz" type="rviz" args="/rocket.rviz" required="true" />
--->
 
 
 
+ <!--  
    <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin" output="screen">
        <param name="local_xy_frame" value="/odom"/>
        <param name="local_xy_origin" value="auto"/> <!-- "auto" setting will set the origin to the first gps fix that it recieves -->
@@ -73,7 +73,7 @@ Gyroscope      : base_link => kalman
       <remap from="/ardrone/imu" to="/imu/data_raw"/>
       <remap from="/ardrone/mag" to="/imu/mag"/>
     </node>
-
+-->
 
 </launch>
 
