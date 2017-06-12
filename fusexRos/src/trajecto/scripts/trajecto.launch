@@ -1,0 +1,80 @@
+<launch>
+<!--
+
+magnetometre   : odom      => navsat
+gps            : odom      => navsat
+Barometre      : odom      => navsat
+
+Accelerometre  : base_link => kalman
+Gyroscope      : base_link => kalman
+
+-->
+   <!-- 
+   Driver : extract data from serial input and generates
+   the different topic used by other nodes:
+   OUT:
+   * Magnet message :
+      ** frame : "rocket"
+      ** to "/imu/mag"
+   * Imu message :
+      ** frame : "rocket"
+      ** to "/imu/data"
+   * GPS message :
+      ** frame : "odom"
+      ** to "/gps/fix"
+   -->
+   <node pkg="trajecto" type="trajecto_node.py" name="ROCKET" output="screen"/>
+   
+   
+   <!--
+      Get an IMU message and Magnet message and generates the IMU message with the computed orientation.
+      IN:
+      OUT:
+   -->
+   <node pkg="imu_filter_madgwick" type="imu_filter_node" name="madgwick">   
+      <rosparam command="load" file="./madgwick.yaml"/>
+   </node>
+
+   <node pkg="robot_localization" type="ekf_localization_node" name="Kalman_filter">
+      <rosparam command="load" file="./ekfParam.yaml"/>
+   </node>
+  
+   <node pkg="robot_localization" type="navsat_transform_node" name="GPS_to_IMU">
+      <rosparam command="load" file="./navSatParamImu.yaml"/>
+   </node>
+
+   <param name="robot_description" textfile="./rocket.urdf" />
+
+ <!--  
+   <node name="rviz" pkg="rviz" type="rviz" args="/rocket.rviz" required="true" />
+-->
+
+
+
+   <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin" output="screen">
+       <param name="local_xy_frame" value="/odom"/>
+       <param name="local_xy_origin" value="auto"/> <!-- "auto" setting will set the origin to the first gps fix that it recieves -->
+       <remap from="gps" to="/gps/fix"/>
+       <rosparam param="local_xy_origins">
+         [{ name: nanterre,
+            latitude: 48.893846,
+            longitude: 2.194031,
+            altitude: 0.0,
+            heading: 0}]
+       </rosparam>
+    
+   </node>
+
+    <node name="mapviz" pkg="mapviz" type="mapviz" />
+    
+    
+
+    <node pkg="rosbag" type="play" name="player" output="screen" args="/home/vivien/fusexRos/src/trajecto/scripts/phidgets_imu_upside_down.bag">
+      <remap from="/ardrone/imu" to="/imu/data_raw"/>
+      <remap from="/ardrone/mag" to="/imu/mag"/>
+    </node>
+
+
+</launch>
+
+

@@ -1,0 +1,11 @@
+<robot name="RSocket">
+  <link name="rocket">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://trajecto/model/AlphaRocketExport3.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  
+</robot>
