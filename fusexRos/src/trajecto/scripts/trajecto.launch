@@ -53,7 +53,8 @@ Gyroscope      : base_link => kalman
  <!--  
    <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin" output="screen">
        <param name="local_xy_frame" value="/odom"/>
-       <param name="local_xy_origin" value="auto"/> <!-- "auto" setting will set the origin to the first gps fix that it recieves -->
+       <param name="local_xy_origin" value="auto"/> 
+
        <remap from="gps" to="/gps/fix"/>
        <rosparam param="local_xy_origins">
          [{ name: nanterre,
@@ -62,8 +63,8 @@ Gyroscope      : base_link => kalman
             altitude: 0.0,
             heading: 0}]
        </rosparam>
-    
    </node>
+
 
     <node name="mapviz" pkg="mapviz" type="mapviz" />
     
@@ -74,7 +75,6 @@ Gyroscope      : base_link => kalman
       <remap from="/ardrone/mag" to="/imu/mag"/>
     </node>
 -->
-
 </launch>
 
 
